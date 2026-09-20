@@ -108,7 +108,7 @@ export default function OceanPreloader({ onComplete }: Props) {
         <div style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center", marginBottom: "6px" }}>
           <span style={{ width: "6px", height: "6px", backgroundColor: "#ff7438", display: "inline-block", borderRadius: "1px" }} />
           <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "11px", letterSpacing: "2px", color: "var(--text-muted)", textTransform: "uppercase" }}>
-            FLOATCHAT OBSERVATORY WORKSTATION
+            FloatChat
           </span>
         </div>
         <p style={{ color: "#94a3b8", fontSize: "13px", margin: 0, fontFamily: "Plus Jakarta Sans, sans-serif" }}>
