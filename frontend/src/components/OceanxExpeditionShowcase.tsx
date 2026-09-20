@@ -84,7 +84,7 @@ export default function OceanxExpeditionShowcase({ onSelectExpedition }: Props) 
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span style={{ width: "8px", height: "8px", backgroundColor: "#ff7438", display: "inline-block", borderRadius: "2px" }} />
           <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "12px", letterSpacing: "1px", color: "#90e0ef", textTransform: "uppercase" }}>
-            OCEANX 2026 GLOBAL MISSIONS & EXPEDITIONS
+            FLOATCHAT 2026 GLOBAL MISSIONS & EXPEDITIONS
           </span>
         </div>
         <span className="badge connected" style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "11px" }}>

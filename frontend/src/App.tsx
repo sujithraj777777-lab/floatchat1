@@ -13,6 +13,7 @@ import CommandPalette from "./components/CommandPalette";
 import FaqAccordion from "./components/FaqAccordion";
 import CopyButton from "./components/CopyButton";
 import OceanxExpeditionShowcase from "./components/OceanxExpeditionShowcase";
+import OceanPreloader from "./components/OceanPreloader";
 import type { ProfileSelection } from "./profileSelection";
 import { getApiUrl } from "./apiConfig";
 
@@ -32,7 +33,8 @@ export default function App() {
   const [explorerFloatId, setExplorerFloatId] = useState(6902746);
   const [activeTab, setActiveTab] = useState<"explorer" | "probe" | "chat" | "catalog" | "section" | "analytics" | "sofar" | "distance">("explorer");
 
-  // New Essential & Recommended Features State
+  // Preloader and Entrance Motion State
+  const [isPreloaderDone, setIsPreloaderDone] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     return (localStorage.getItem("floatchat_theme") as "dark" | "light") || "dark";
   });
@@ -139,6 +141,11 @@ export default function App() {
 
   return (
     <main className="workspace">
+      {/* Opening Radar Hydrographic Preloader */}
+      {!isPreloaderDone && (
+        <OceanPreloader onComplete={() => setIsPreloaderDone(true)} />
+      )}
+
       {/* WCAG Skip to Content */}
       <a className="skip-to-content" href="#main-content">
         Skip to Main Content
@@ -155,7 +162,7 @@ export default function App() {
       />
 
       {/* Workstation Header */}
-      <header className="header">
+      <header className="header animate-entrance stagger-1">
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <a className="brand" href="/">
             FloatChat <span>ARGO OBSERVATORY</span>
@@ -216,7 +223,7 @@ export default function App() {
       </header>
 
       {/* Hero Overview */}
-      <section className="intro">
+      <section className="intro animate-entrance stagger-2">
         <span className="eyebrow">ARGO GLOBAL PROFILING FLOAT OBSERVATORY</span>
         <h1>Oceanographic Profile Analysis & Data Retrieval</h1>
         <p className="description">
@@ -261,10 +268,13 @@ export default function App() {
       </section>
 
       {/* OceanX Expedition Showcase Banner */}
-      <OceanxExpeditionShowcase onSelectExpedition={viewProfile} />
+      <div className="animate-entrance stagger-3">
+        <OceanxExpeditionShowcase onSelectExpedition={viewProfile} />
+      </div>
 
       {/* Navigation Dock with Mobile Drawer Toggle */}
       <nav
+        className="animate-entrance stagger-4"
         style={{
           display: "flex",
           gap: "8px",
