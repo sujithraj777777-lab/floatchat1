@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+ENV/
+env/
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Environment files
+.env
+.env.local
+*.env
+
+# OS / Editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
