@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://your-backend-api.onrender.com/:path*"
+      "destination": "https://floatchat-backend-9h3r.onrender.com/:path*"
     },
     {
       "source": "/(.*)",

@@ -37,7 +37,7 @@ export function LiveArgoFetcher({ onCatalogUpdated }: LiveArgoFetcherProps) {
 
     try {
       setStatusMessage(`Streaming float ${fid} profiles from ERDDAP server...`);
-      const response = await fetch("http://127.0.0.1:8001/fetch/argo", {
+      const response = await fetch("/api/fetch/argo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ float_id: fid, cycles }),

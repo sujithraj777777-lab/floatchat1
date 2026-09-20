@@ -263,14 +263,14 @@ export default function ProfileExplorer({
 
   const handleExportCSV = () => {
     window.open(
-      `http://127.0.0.1:8001/export/csv?float_id=${profile.float_id}&cycle=${profile.cycle}`,
+      `/api/export/csv?float_id=${profile.float_id}&cycle=${profile.cycle}`,
       "_blank"
     );
   };
 
   const handleExportGeoJSON = () => {
     window.open(
-      `http://127.0.0.1:8001/export/geojson?float_id=${profile.float_id}`,
+      `/api/export/geojson?float_id=${profile.float_id}`,
       "_blank"
     );
   };
