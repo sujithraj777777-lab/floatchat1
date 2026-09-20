@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
+import { getApiUrl } from "../apiConfig";
 
 type RayPathPoint = {
   range_km: number;
@@ -38,7 +39,7 @@ export default function SofarAcousticsPanel({ floatId, cycle }: Props) {
       setLoading(true);
       setError("");
       try {
-        const response = await fetch("/api/analyze/sofar-channel", {
+        const response = await fetch(getApiUrl("/analyze/sofar-channel"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ float_id: floatId, cycle }),

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getApiUrl } from "../apiConfig";
 
 type NetcdfMetadata = {
   float_id: number;
@@ -27,7 +28,7 @@ export default function NetcdfMetadataModal({ floatId, cycle, isOpen, onClose }:
       setLoading(true);
       setError("");
       try {
-        const response = await fetch(`/api/profiles/metadata?float_id=${floatId}&cycle=${cycle}`);
+        const response = await fetch(getApiUrl(`/profiles/metadata?float_id=${floatId}&cycle=${cycle}`));
         if (!response.ok) {
           throw new Error(`HTTP ${response.status} failed to load NetCDF schema.`);
         }

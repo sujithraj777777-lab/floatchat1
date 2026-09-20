@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import type { ProfileSelection } from "./profileSelection";
 import { LiveArgoFetcher } from "./LiveArgoFetcher";
+import { getApiUrl } from "./apiConfig";
 
 type CatalogFloat = {
   float_id: number;
@@ -112,7 +113,7 @@ export default function CatalogSearch({ onViewProfile }: Props) {
       setCatalogError("");
 
       try {
-        const response = await fetch("/api/catalog", {
+        const response = await fetch(getApiUrl("/catalog"), {
           signal: controller.signal,
         });
 
@@ -207,7 +208,7 @@ export default function CatalogSearch({ onViewProfile }: Props) {
     setResult(null);
 
     try {
-      const response = await fetch("/api/query", {
+      const response = await fetch(getApiUrl("/query"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

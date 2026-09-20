@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from "react";
+import { getApiUrl } from "../apiConfig";
 
 type FetchState<T> = {
   data: T | null;
@@ -29,7 +30,7 @@ export function useOceanFetch<T>() {
       setState({ data: null, loading: true, error: "" });
 
       try {
-        const response = await fetch(url, {
+        const response = await fetch(getApiUrl(url), {
           ...options,
           signal: controller.signal,
         });

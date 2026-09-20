@@ -6,6 +6,7 @@ import DiveMode from "./DiveMode";
 import ProfileComparison from "./ProfileComparison";
 import NetcdfMetadataModal from "./components/NetcdfMetadataModal";
 import PdfReportGenerator from "./components/PdfReportGenerator";
+import { getApiUrl } from "./apiConfig";
 
 type Observation = {
   source_row: number;
@@ -91,7 +92,7 @@ export default function ProfileExplorer({
 
       try {
         const response = await fetch(
-          `/api/profiles/history?float_id=${encodeURIComponent(floatId)}`,
+          getApiUrl(`/profiles/history?float_id=${encodeURIComponent(floatId)}`),
           { signal: controller.signal }
         );
 
@@ -263,14 +264,14 @@ export default function ProfileExplorer({
 
   const handleExportCSV = () => {
     window.open(
-      `/api/export/csv?float_id=${profile.float_id}&cycle=${profile.cycle}`,
+      getApiUrl(`/export/csv?float_id=${profile.float_id}&cycle=${profile.cycle}`),
       "_blank"
     );
   };
 
   const handleExportGeoJSON = () => {
     window.open(
-      `/api/export/geojson?float_id=${profile.float_id}`,
+      getApiUrl(`/export/geojson?float_id=${profile.float_id}`),
       "_blank"
     );
   };

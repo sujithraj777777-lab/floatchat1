@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getApiUrl } from "../apiConfig";
 
 type DistanceSegment = {
   from_cycle: number;
@@ -33,7 +34,7 @@ export default function SpatialDistancePanel({ floatId }: Props) {
       setLoading(true);
       setError("");
       try {
-        const response = await fetch(`/api/analyze/distance-matrix?float_id=${floatId}`);
+        const response = await fetch(getApiUrl(`/analyze/distance-matrix?float_id=${floatId}`));
         if (!response.ok) {
           throw new Error(`HTTP ${response.status} failed to load distance matrix.`);
         }

@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef } from "react";
+import { getApiUrl } from "../apiConfig";
 
 type ForecastPoint = {
   days_ahead: number;
@@ -43,7 +44,7 @@ export function useForecast() {
 
       try {
         const response = await fetch(
-          `/api/forecast/${floatId}?variable=${variable}&horizon_days=${horizonDays}`,
+          getApiUrl(`/forecast/${floatId}?variable=${variable}&horizon_days=${horizonDays}`),
           { signal: controller.signal }
         );
 

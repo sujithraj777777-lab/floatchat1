@@ -13,6 +13,7 @@ import CommandPalette from "./components/CommandPalette";
 import FaqAccordion from "./components/FaqAccordion";
 import CopyButton from "./components/CopyButton";
 import type { ProfileSelection } from "./profileSelection";
+import { getApiUrl } from "./apiConfig";
 
 type HealthResponse = {
   status: string;
@@ -86,7 +87,7 @@ export default function App() {
       setError("");
       setHealth(null);
       try {
-        const response = await fetch("/api/health", { signal: controller.signal });
+        const response = await fetch(getApiUrl("/health"), { signal: controller.signal });
         if (!response.ok) {
           throw new Error(`Backend returned HTTP ${response.status}.`);
         }

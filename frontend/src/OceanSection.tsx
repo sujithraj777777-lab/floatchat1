@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import type { ProfileSelection } from "./profileSelection";
+import { getApiUrl } from "./apiConfig";
 
 type Observation = {
   source_row: number;
@@ -92,7 +93,7 @@ export default function OceanSection({ onViewProfile }: Props) {
       setError("");
 
       try {
-        const response = await fetch("/api/catalog", {
+        const response = await fetch(getApiUrl("/catalog"), {
           signal: controller.signal,
         });
 
@@ -236,7 +237,7 @@ function FloatSectionViewer({ floatId, onViewProfile }: FloatSectionProps) {
 
       try {
         const response = await fetch(
-          `/api/profiles/history?float_id=${encodeURIComponent(floatId)}`,
+          getApiUrl(`/profiles/history?float_id=${encodeURIComponent(floatId)}`),
           { signal: controller.signal }
         );
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getApiUrl } from "./apiConfig";
 
 interface LiveArgoFetcherProps {
   onCatalogUpdated: () => void;
@@ -37,7 +38,7 @@ export function LiveArgoFetcher({ onCatalogUpdated }: LiveArgoFetcherProps) {
 
     try {
       setStatusMessage(`Streaming float ${fid} profiles from ERDDAP server...`);
-      const response = await fetch("/api/fetch/argo", {
+      const response = await fetch(getApiUrl("/fetch/argo"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ float_id: fid, cycles }),

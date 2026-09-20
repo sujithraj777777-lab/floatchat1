@@ -1,6 +1,7 @@
 import type { ProfileSelection } from "./profileSelection";
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
+import { getApiUrl } from "./apiConfig";
 
 type OceanAnswer = {
   status: "completed" | "clarification" | "unsupported";
@@ -125,7 +126,7 @@ export default function OceanChat({ onViewProfile }: Props) {
     }, 45000);
 
     try {
-      const response = await fetch("/api/ask", {
+      const response = await fetch(getApiUrl("/ask"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         signal: controller.signal,
