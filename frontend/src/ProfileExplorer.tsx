@@ -144,6 +144,11 @@ export default function ProfileExplorer({
           }
         } else {
           setSelectedIndex(0);
+          if (data.profiles.length === 0) {
+            throw new Error(
+              `Float WMO ${floatId} is not yet cached. Click "Live Data Sync" above to stream NetCDF profiles from ERDDAP.`
+            );
+          }
         }
       } catch (caught) {
         if (controller.signal.aborted && !timedOut) return;

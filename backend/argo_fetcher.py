@@ -67,6 +67,7 @@ def validate_dataset(dataset, expected_float_id=None, expected_cycle=None):
 
 def fetch_argo_profile(float_id: int, cycle: int) -> dict:
     """Download a single Argo float profile by float_id and cycle from ERDDAP and save to local dataset catalog."""
+    PROFILE_DIRECTORY.mkdir(parents=True, exist_ok=True)
     filename = f"argo_{float_id}_cycle_{cycle}.nc"
     destination_path = PROFILE_DIRECTORY / filename
 
