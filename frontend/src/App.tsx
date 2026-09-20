@@ -12,6 +12,7 @@ import SpatialDistancePanel from "./components/SpatialDistancePanel";
 import CommandPalette from "./components/CommandPalette";
 import FaqAccordion from "./components/FaqAccordion";
 import CopyButton from "./components/CopyButton";
+import OceanxExpeditionShowcase from "./components/OceanxExpeditionShowcase";
 import type { ProfileSelection } from "./profileSelection";
 import { getApiUrl } from "./apiConfig";
 
@@ -259,6 +260,9 @@ export default function App() {
         </div>
       </section>
 
+      {/* OceanX Expedition Showcase Banner */}
+      <OceanxExpeditionShowcase onSelectExpedition={viewProfile} />
+
       {/* Navigation Dock with Mobile Drawer Toggle */}
       <nav
         style={{
@@ -308,7 +312,7 @@ export default function App() {
       {error && (
         <div className="error" style={{ marginBottom: "20px" }}>
           <p style={{ margin: 0 }}>Connection Alert: {error}</p>
-          <p style={{ fontSize: "12px", margin: "4px 0 0 0" }}>Ensure backend FastAPI service is running on port 8001.</p>
+          <p style={{ fontSize: "12px", margin: "4px 0 0 0" }}>Connecting to live Render FastAPI server (https://floatchat-backend-9h3r.onrender.com)...</p>
         </div>
       )}
 

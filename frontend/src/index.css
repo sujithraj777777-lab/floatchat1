@@ -1,21 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
 
 :root, [data-theme="dark"] {
-  --bg-dark: #080c14;
-  --bg-card-base: linear-gradient(180deg, rgba(18, 25, 41, 0.85) 0%, rgba(10, 14, 24, 0.95) 100%);
-  --bg-card-border: rgba(255, 255, 255, 0.08);
-  --bg-card-hover: rgba(56, 189, 248, 0.3);
+  --bg-dark: #000717;
+  --bg-card-base: linear-gradient(180deg, rgba(0, 19, 41, 0.85) 0%, rgba(0, 9, 25, 0.95) 100%);
+  --bg-card-border: rgba(144, 224, 239, 0.12);
+  --bg-card-hover: rgba(144, 224, 239, 0.3);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
+  --accent-cyan: #90e0ef;
   --accent-blue: #38bdf8;
   --accent-teal: #2dd4bf;
-  --accent-coral: #f97316;
+  --accent-coral: #ff7438;
   --accent-purple: #a855f7;
   --status-good: #22c55e;
   --status-warning: #f59e0b;
-  --input-bg: rgba(8, 12, 20, 0.8);
-  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  --glow-blue: 0 0 25px rgba(56, 189, 248, 0.2);
+  --input-bg: rgba(0, 7, 23, 0.85);
+  --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(144, 224, 239, 0.12);
+  --glow-blue: 0 0 30px rgba(144, 224, 239, 0.25);
   font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   color: var(--text-main);
   background-color: var(--bg-dark);
