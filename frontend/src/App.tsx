@@ -161,16 +161,18 @@ export default function App() {
         actions={commandActions}
       />
 
-      {/* Workstation Header */}
-      <header className="header animate-entrance stagger-1">
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <a className="brand" href="/">
-            FloatChat <span>ARGO OBSERVATORY</span>
+      {/* Workstation Command Header */}
+      <header className="header animate-entrance stagger-1" style={{ position: "sticky", top: 0, zIndex: 100, backdropFilter: "blur(12px)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+          <a className="brand" href="/" style={{ fontSize: "18px" }}>
+            FloatChat <span style={{ fontSize: "10px", background: "rgba(144, 224, 239, 0.12)", border: "1px solid rgba(144, 224, 239, 0.3)", color: "#90e0ef", padding: "2px 6px", borderRadius: "4px" }}>HYDROGRAPHIC CONSOLE</span>
           </a>
+          <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "11px", color: "var(--accent-teal)", background: "rgba(45, 212, 191, 0.08)", padding: "4px 8px", borderRadius: "4px", border: "1px solid rgba(45, 212, 191, 0.2)" }}>
+            📍 12.4200° N, 68.2100° E ▪ WMO {explorerFloatId}
+          </span>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-          {/* Quick Search Ctrl+K Button */}
           <button
             onClick={() => setShowCommandPalette(true)}
             style={{
@@ -182,13 +184,13 @@ export default function App() {
               display: "flex",
               alignItems: "center",
               gap: "6px",
+              borderRadius: "6px",
             }}
           >
             <span>🔍 Search</span>
             <kbd style={{ background: "var(--bg-card-base)", padding: "1px 5px", borderRadius: "4px", fontSize: "10px" }}>Ctrl+K</kbd>
           </button>
 
-          {/* Dark / Light Mode Toggle */}
           <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             style={{
@@ -197,12 +199,12 @@ export default function App() {
               background: "var(--bg-dark)",
               color: "var(--text-main)",
               border: "1px solid var(--bg-card-border)",
+              borderRadius: "6px",
             }}
           >
             {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
           </button>
 
-          {/* System Connection Badge */}
           <span className={`badge ${connected ? "connected" : ""}`}>
             {loading ? <span className="spinner" /> : connected ? "ARGO Service Online" : "System Offline"}
           </span>
@@ -215,6 +217,7 @@ export default function App() {
               background: "var(--bg-dark)",
               color: "var(--accent-blue)",
               border: "1px solid var(--bg-card-border)",
+              borderRadius: "6px",
             }}
           >
             Sync
@@ -222,102 +225,88 @@ export default function App() {
         </div>
       </header>
 
-      {/* Hero Overview */}
-      <section className="intro animate-entrance stagger-2">
-        <span className="eyebrow">ARGO GLOBAL PROFILING FLOAT OBSERVATORY</span>
-        <h1>Oceanographic Profile Analysis & Data Retrieval</h1>
-        <p className="description">
-          Natural language semantic query engine and 4D WebGL visualization platform for ARGO oceanographic observations.
-          Translates ocean science queries into deterministic NetCDF Xarray analysis workflows with verifiable data provenance.
-        </p>
-
-        {/* Live Metrics Summary with Copy WMO Button */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-            gap: "14px",
-            margin: "20px 0 10px 0",
-          }}
-        >
-          <div style={{ background: "var(--bg-card-base)", border: "1px solid var(--bg-card-border)", borderRadius: "10px", padding: "14px 16px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ color: "var(--text-muted)", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.5px" }}>Active WMO ID</span>
-              <CopyButton textToCopy={String(explorerFloatId)} label="Copy ID" />
+      {/* Compact Telemetry Strip & Navigation Control Bar */}
+      <section className="animate-entrance stagger-2" style={{ margin: "16px 0 16px 0" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap", marginBottom: "12px", background: "var(--bg-card-base)", border: "1px solid var(--bg-card-border)", padding: "10px 16px", borderRadius: "10px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "20px", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ color: "var(--text-muted)", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.5px" }}>WMO ID:</span>
+              <span style={{ fontSize: "14px", fontWeight: "700", color: "var(--accent-teal)", fontFamily: "JetBrains Mono, monospace" }}>{explorerFloatId}</span>
+              <CopyButton textToCopy={String(explorerFloatId)} label="Copy" />
             </div>
-            <div style={{ fontSize: "18px", fontWeight: "700", color: "var(--accent-teal)", marginTop: "4px" }}>
-              WMO {explorerFloatId}
+
+            <div style={{ height: "14px", width: "1px", background: "var(--bg-card-border)" }} />
+
+            <div>
+              <span style={{ color: "var(--text-muted)", fontSize: "11px", fontWeight: "700", textTransform: "uppercase" }}>Range: </span>
+              <span style={{ fontSize: "13px", fontWeight: "700", color: "var(--accent-blue)", fontFamily: "JetBrains Mono, monospace" }}>0 - 2,000 dbar</span>
+            </div>
+
+            <div style={{ height: "14px", width: "1px", background: "var(--bg-card-border)" }} />
+
+            <div>
+              <span style={{ color: "var(--text-muted)", fontSize: "11px", fontWeight: "700", textTransform: "uppercase" }}>Assurance: </span>
+              <span style={{ fontSize: "13px", fontWeight: "700", color: "var(--accent-coral)", fontFamily: "JetBrains Mono, monospace" }}>Argo QC Flag 1 Passed</span>
             </div>
           </div>
 
-          <div style={{ background: "var(--bg-card-base)", border: "1px solid var(--bg-card-border)", borderRadius: "10px", padding: "14px 16px" }}>
-            <span style={{ color: "var(--text-muted)", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.5px" }}>Vertical Range</span>
-            <div style={{ fontSize: "18px", fontWeight: "700", color: "var(--accent-blue)", marginTop: "4px" }}>0 - 2,000 dbar</div>
-          </div>
-
-          <div style={{ background: "var(--bg-card-base)", border: "1px solid var(--bg-card-border)", borderRadius: "10px", padding: "14px 16px" }}>
-            <span style={{ color: "var(--text-muted)", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.5px" }}>Cache Status</span>
-            <div style={{ fontSize: "18px", fontWeight: "700", color: "var(--status-good)", marginTop: "4px" }}>Synced (2026)</div>
-          </div>
-
-          <div style={{ background: "var(--bg-card-base)", border: "1px solid var(--bg-card-border)", borderRadius: "10px", padding: "14px 16px" }}>
-            <span style={{ color: "var(--text-muted)", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.5px" }}>Data Assurance</span>
-            <div style={{ fontSize: "18px", fontWeight: "700", color: "var(--accent-coral)", marginTop: "4px" }}>QC Flag 1 Passed</div>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <span style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "JetBrains Mono, monospace" }}>ARRAY CACHE: </span>
+            <span className="badge connected" style={{ fontSize: "11px", fontFamily: "JetBrains Mono, monospace" }}>2026 SYNCED</span>
           </div>
         </div>
+
+        {/* Workstation Navigation Tabs */}
+        <nav
+          style={{
+            display: "flex",
+            gap: "8px",
+            overflowX: "auto",
+            padding: "6px",
+            background: "var(--bg-card-base)",
+            borderRadius: "10px",
+            border: "1px solid var(--bg-card-border)",
+          }}
+        >
+          {[
+            { id: "explorer", label: "Profile Explorer & 3D Globe" },
+            { id: "chat", label: "Semantic AI Engine" },
+            { id: "probe", label: "In-Situ Physics Telemetry" },
+            { id: "sofar", label: "SOFAR Acoustics & Ray Tracing" },
+            { id: "distance", label: "Geodesic Drift Matrix" },
+            { id: "catalog", label: "Dataset Catalog & Search" },
+            { id: "section", label: "Vertical Heatmap Transects" },
+            { id: "analytics", label: "Physical Analysis Tools" },
+          ].map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                style={{
+                  background: isActive ? "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)" : "var(--bg-dark)",
+                  color: isActive ? "#ffffff" : "var(--text-muted)",
+                  border: isActive ? "1px solid #38bdf8" : "1px solid var(--bg-card-border)",
+                  padding: "8px 16px",
+                  borderRadius: "6px",
+                  fontWeight: "700",
+                  fontSize: "13px",
+                  whiteSpace: "nowrap",
+                  transition: "all 0.15s ease",
+                  boxShadow: isActive ? "0 0 15px rgba(56, 189, 248, 0.3)" : "none",
+                }}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </nav>
       </section>
 
       {/* OceanX Expedition Showcase Banner */}
       <div className="animate-entrance stagger-3">
         <OceanxExpeditionShowcase onSelectExpedition={viewProfile} />
       </div>
-
-      {/* Navigation Dock with Mobile Drawer Toggle */}
-      <nav
-        className="animate-entrance stagger-4"
-        style={{
-          display: "flex",
-          gap: "8px",
-          overflowX: "auto",
-          padding: "6px",
-          marginBottom: "24px",
-          background: "var(--bg-card-base)",
-          borderRadius: "10px",
-          border: "1px solid var(--bg-card-border)",
-        }}
-      >
-        {[
-          { id: "explorer", label: "Profile Explorer & 3D Globe" },
-          { id: "chat", label: "Semantic Query Engine" },
-          { id: "probe", label: "In-Situ Physics Telemetry" },
-          { id: "sofar", label: "SOFAR Acoustics & Ray Tracing" },
-          { id: "distance", label: "Geodesic Drift & Distance Matrix" },
-          { id: "catalog", label: "Dataset Catalog & Search" },
-          { id: "section", label: "Vertical Transects & Heatmap" },
-          { id: "analytics", label: "Physical Analysis Tools" },
-        ].map((tab) => {
-          const isActive = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              style={{
-                background: isActive ? "#2563eb" : "var(--bg-dark)",
-                color: isActive ? "#ffffff" : "var(--text-muted)",
-                border: isActive ? "none" : "1px solid var(--bg-card-border)",
-                padding: "8px 16px",
-                borderRadius: "6px",
-                fontWeight: "700",
-                fontSize: "13px",
-                whiteSpace: "nowrap",
-                transition: "all 0.15s ease",
-              }}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
-      </nav>
 
       {error && (
         <div className="error" style={{ marginBottom: "20px" }}>
