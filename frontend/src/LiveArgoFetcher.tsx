@@ -74,6 +74,36 @@ export function LiveArgoFetcher({ onCatalogUpdated }: LiveArgoFetcherProps) {
         Download delayed-mode ARGO float profiles directly from global oceanographic DAC servers into local NetCDF cache.
       </p>
 
+      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "14px" }}>
+        <span style={{ fontSize: "12px", color: "var(--text-muted)", alignSelf: "center", fontWeight: "600" }}>
+          Authentic Presets:
+        </span>
+        <button
+          type="button"
+          className="badge"
+          style={{ cursor: "pointer", background: "rgba(56, 189, 248, 0.12)", border: "1px solid rgba(56, 189, 248, 0.3)", color: "var(--accent-blue)" }}
+          onClick={() => { setFloatId("6902746"); setCyclesStr("30, 31, 32, 33, 34, 35"); }}
+        >
+          🌊 Indian Ocean (WMO 6902746)
+        </button>
+        <button
+          type="button"
+          className="badge"
+          style={{ cursor: "pointer", background: "rgba(56, 189, 248, 0.12)", border: "1px solid rgba(56, 189, 248, 0.3)", color: "var(--accent-blue)" }}
+          onClick={() => { setFloatId("6901188"); setCyclesStr("142, 143, 144, 145, 146"); }}
+        >
+          🧊 North Atlantic (WMO 6901188)
+        </button>
+        <button
+          type="button"
+          className="badge"
+          style={{ cursor: "pointer", background: "rgba(56, 189, 248, 0.12)", border: "1px solid rgba(56, 189, 248, 0.3)", color: "var(--accent-blue)" }}
+          onClick={() => { setFloatId("5906422"); setCyclesStr("10, 11, 12, 13, 14"); }}
+        >
+          🌀 Pacific Kuroshio (WMO 5906422)
+        </button>
+      </div>
+
       <form onSubmit={handleFetch} style={{ display: "grid", gridTemplateColumns: "1fr 2fr auto", gap: "12px", alignItems: "end" }}>
         <div>
           <label style={{ display: "block", color: "var(--text-muted)", fontSize: "11px", fontWeight: "600", marginBottom: "4px" }}>
