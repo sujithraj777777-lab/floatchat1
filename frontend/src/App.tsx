@@ -35,12 +35,21 @@ export default function App() {
 
   // Preloader and Entrance Motion State
   const [isPreloaderDone, setIsPreloaderDone] = useState(false);
+  const [judgeNotice, setJudgeNotice] = useState<string | null>(null);
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     return (localStorage.getItem("floatchat_theme") as "dark" | "light") || "dark";
   });
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showTopBtn, setShowTopBtn] = useState(false);
   const [showCommandPalette, setShowCommandPalette] = useState(false);
+
+  function triggerJudgeDemo() {
+    setExplorerFloatId(6902746);
+    setSelection({ floatId: 6902746, cycle: 34, dataset: "demo", sourceRow: 0 });
+    setActiveTab("explorer");
+    setJudgeNotice("🏆 Hackathon Evaluator Demo Mode Activated! Loaded Float WMO 6902746 Cycle 34 with 4D WebGL globe & CTD observation metrics.");
+    setTimeout(() => setJudgeNotice(null), 8000);
+  }
 
   const explorerRef = useRef<HTMLDivElement>(null);
 
@@ -210,6 +219,23 @@ export default function App() {
           </span>
 
           <button
+            onClick={triggerJudgeDemo}
+            style={{
+              padding: "6px 14px",
+              fontSize: "12px",
+              fontWeight: "700",
+              background: "linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)",
+              color: "#ffffff",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              boxShadow: "0 0 15px rgba(244, 63, 94, 0.4)",
+            }}
+          >
+            🏆 Judge Demo
+          </button>
+
+          <button
             onClick={() => setAttempt((v) => v + 1)}
             style={{
               padding: "6px 14px",
@@ -224,6 +250,13 @@ export default function App() {
           </button>
         </div>
       </header>
+
+      {judgeNotice && (
+        <div style={{ marginTop: "14px", padding: "12px 18px", background: "linear-gradient(90deg, rgba(244, 63, 94, 0.2) 0%, rgba(56, 189, 248, 0.2) 100%)", border: "1px solid #f43f5e", borderRadius: "8px", color: "#ffffff", fontSize: "13px", fontWeight: "600", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span>{judgeNotice}</span>
+          <button onClick={() => setJudgeNotice(null)} style={{ background: "transparent", border: "none", color: "#ffffff", cursor: "pointer", fontWeight: "700" }}>✕</button>
+        </div>
+      )}
 
       {/* Compact Telemetry Strip & Navigation Control Bar */}
       <section className="animate-entrance stagger-2" style={{ margin: "16px 0 16px 0" }}>
