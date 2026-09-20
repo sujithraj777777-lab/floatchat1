@@ -62,6 +62,19 @@ def profile_history(float_id: int | None = Query(default=None, gt=0)):
     if float_id is None:
         return read_history()
     history = read_catalog_profiles(float_id=float_id)
+    if not history["profiles"]:
+        # Auto-fetch profiles from ERDDAP if float is not yet cached locally
+        from argo_fetcher import fetch_argo_series
+        default_cycles = (
+            [142, 143, 144, 145, 146] if float_id == 6901188
+            else [10, 11, 12, 13, 14] if float_id == 5906422
+            else [30, 31, 32, 33, 34]
+        )
+        try:
+            fetch_argo_series(float_id, default_cycles)
+            history = read_catalog_profiles(float_id=float_id)
+        except Exception:
+            pass
     return {
         "profiles": history["profiles"],
         "excluded_profiles": history["excluded_profiles"],

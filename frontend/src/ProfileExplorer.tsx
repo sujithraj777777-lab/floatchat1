@@ -133,12 +133,15 @@ export default function ProfileExplorer({
               p.evidence.local_dataset === selection.dataset
           );
 
-          if (matched < 0) {
+          if (matched >= 0) {
+            setSelectedIndex(matched);
+          } else if (data.profiles.length > 0) {
+            setSelectedIndex(0);
+          } else {
             throw new Error(
-              `The selected dataset was excluded by backend QC policy or unavailable for float ${selection.floatId}.`
+              `Float WMO ${selection.floatId} is not yet cached. Click "Live Data Sync" above to stream NetCDF profiles from ERDDAP.`
             );
           }
-          setSelectedIndex(matched);
         } else {
           setSelectedIndex(0);
         }
