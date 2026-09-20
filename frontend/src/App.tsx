@@ -35,8 +35,8 @@ export default function App() {
 
   // Preloader and Entrance Motion State
   const [isPreloaderDone, setIsPreloaderDone] = useState(false);
-  const [theme, setTheme] = useState<"dark" | "light">(() => {
-    return (localStorage.getItem("floatchat_theme") as "dark" | "light") || "dark";
+  const [theme, setTheme] = useState<"dark" | "light" | "ocean-deep">(() => {
+    return (localStorage.getItem("floatchat_theme") as "dark" | "light" | "ocean-deep") || "ocean-deep";
   });
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showTopBtn, setShowTopBtn] = useState(false);
@@ -192,7 +192,7 @@ export default function App() {
           </button>
 
           <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={() => setTheme(theme === "ocean-deep" ? "dark" : theme === "dark" ? "light" : "ocean-deep")}
             style={{
               padding: "6px 12px",
               fontSize: "12px",
@@ -202,7 +202,7 @@ export default function App() {
               borderRadius: "6px",
             }}
           >
-            {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+            {theme === "ocean-deep" ? "🌊 Ocean Deep" : theme === "dark" ? "🌙 Dark" : "☀️ Light"}
           </button>
 
           <span className={`badge ${connected ? "connected" : ""}`}>
