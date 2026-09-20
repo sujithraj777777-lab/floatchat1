@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Query, Response
+from fastapi import FastAPI, HTTPException, Query, Response, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from ocean_data import read_profile, profile_is_ready, read_history, read_catalog, read_catalog_profiles
 from pydantic import BaseModel, Field
@@ -22,13 +22,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+router = APIRouter()
+
 
 @app.get("/")
 def root():
     return {"message": "Welcome to FloatChat", "docs": "/docs", "version": "0.3.0"}
 
 
-@app.get("/health")
+@router.get("/health")
 def health():
     return {
         "status": "ok",
@@ -38,12 +40,12 @@ def health():
     }
 
 
-@app.get("/catalog")
+@router.get("/catalog")
 def catalog():
     return read_catalog()
 
 
-@app.get("/profiles/demo")
+@router.get("/profiles/demo")
 def demo_profile():
     try:
         return read_profile()
@@ -55,7 +57,7 @@ def demo_profile():
         raise HTTPException(status_code=500, detail="Profile file could not be read.") from error
 
 
-@app.get("/profiles/history")
+@router.get("/profiles/history")
 def profile_history(float_id: int | None = Query(default=None, gt=0)):
     if float_id is None:
         return read_history()
@@ -74,7 +76,7 @@ class FetchArgoRequest(BaseModel):
     cycles: list[int] = Field(default_factory=lambda: [30, 31, 32, 33, 34])
 
 
-@app.post("/fetch/argo")
+@router.post("/fetch/argo")
 def fetch_argo(request: FetchArgoRequest):
     """Dynamically download Argo profiles from ERDDAP by float ID and cycles."""
     from argo_fetcher import fetch_argo_series
@@ -84,7 +86,7 @@ def fetch_argo(request: FetchArgoRequest):
         raise HTTPException(status_code=500, detail=str(err)) from err
 
 
-@app.get("/export/csv")
+@router.get("/export/csv")
 def export_csv(float_id: int = Query(gt=0), cycle: int = Query(ge=0)):
     """Export profile observations to CSV format."""
     from tools import get_profile
@@ -121,7 +123,7 @@ def export_csv(float_id: int = Query(gt=0), cycle: int = Query(ge=0)):
     )
 
 
-@app.get("/export/geojson")
+@router.get("/export/geojson")
 def export_geojson(float_id: int | None = Query(default=None)):
     """Export profile spatial locations as a GeoJSON FeatureCollection."""
     history = read_catalog_profiles(float_id=float_id)
@@ -156,12 +158,18 @@ def export_geojson(float_id: int | None = Query(default=None)):
     )
 
 
-@app.post("/ask")
+@router.post("/query")
+def query_endpoint(query: OceanQuery):
+    """Execute depth and coordinate filtering on ocean profiles."""
+    return execute_query(query)
+
+
+@router.post("/ask")
 def ask(request: AskRequest):
     return ask_ocean(request)
 
 
-@app.get("/tools")
+@router.get("/tools")
 def list_tools():
     from tools import get_available_tools
     return {"tools": get_available_tools()}
@@ -172,13 +180,13 @@ class ToolExecuteRequest(BaseModel):
     arguments: dict = {}
 
 
-@app.post("/tools/execute")
+@router.post("/tools/execute")
 def execute_tool_endpoint(request: ToolExecuteRequest):
     from tools import execute_tool
     return execute_tool(request.tool, request.arguments)
 
 
-@app.get("/forecast/{float_id}")
+@router.get("/forecast/{float_id}")
 def forecast(
     float_id: int,
     variable: str = Query(default="temperature", pattern="^(temperature|salinity)$"),
@@ -232,7 +240,7 @@ class SoundSpeedRequest(BaseModel):
     cycle: int
 
 
-@app.post("/analyze/sound-speed")
+@router.post("/analyze/sound-speed")
 def analyze_sound_speed(request: SoundSpeedRequest):
     """Calculate underwater sound speed profile and SOFAR acoustic axis depth."""
     from services.ocean_analytics import OceanAnalyticsService
@@ -255,7 +263,7 @@ class ThermoclineRequest(BaseModel):
     min_gradient: float = 0.02
 
 
-@app.post("/analyze/thermocline")
+@router.post("/analyze/thermocline")
 def analyze_thermocline(request: ThermoclineRequest):
     from services.ocean_analytics import OceanAnalyticsService
     from tools import get_profile
@@ -281,7 +289,7 @@ class MixedLayerRequest(BaseModel):
     threshold_c: float = 0.2
 
 
-@app.post("/analyze/mixed-layer")
+@router.post("/analyze/mixed-layer")
 def analyze_mixed_layer(request: MixedLayerRequest):
     from services.ocean_analytics import OceanAnalyticsService
     from tools import get_profile
@@ -307,7 +315,7 @@ class DepthChangeRequest(BaseModel):
     cycle_b: int
 
 
-@app.post("/analyze/depth-changes")
+@router.post("/analyze/depth-changes")
 def analyze_depth_changes(request: DepthChangeRequest):
     from services.ocean_analytics import OceanAnalyticsService
     from tools import get_profile
@@ -340,7 +348,7 @@ class SofarRequest(BaseModel):
     cycle: int
 
 
-@app.post("/analyze/sofar-channel")
+@router.post("/analyze/sofar-channel")
 def analyze_sofar_channel(request: SofarRequest):
     from services.ocean_analytics import OceanAnalyticsService
     from tools import get_profile
@@ -356,7 +364,7 @@ def analyze_sofar_channel(request: SofarRequest):
     return result
 
 
-@app.get("/analyze/distance-matrix")
+@router.get("/analyze/distance-matrix")
 def analyze_distance_matrix(float_id: int = Query(gt=0)):
     from services.ocean_analytics import OceanAnalyticsService
     history = read_catalog_profiles(float_id=float_id)
@@ -367,7 +375,7 @@ def analyze_distance_matrix(float_id: int = Query(gt=0)):
     return service.calculate_geodesic_distance_matrix(history["profiles"])
 
 
-@app.get("/profiles/metadata")
+@router.get("/profiles/metadata")
 def profile_metadata(float_id: int = Query(gt=0), cycle: int = Query(ge=0)):
     from tools import get_profile
     profile = get_profile(float_id, cycle)
@@ -401,3 +409,6 @@ def profile_metadata(float_id: int = Query(gt=0), cycle: int = Query(ge=0)):
         "evidence": profile.get("evidence", {}),
     }
 
+# Register all routes under both root (/) and (/api) prefixes
+app.include_router(router)
+app.include_router(router, prefix="/api")
