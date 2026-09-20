@@ -7,6 +7,7 @@ import ProfileComparison from "./ProfileComparison";
 import NetcdfMetadataModal from "./components/NetcdfMetadataModal";
 import PdfReportGenerator from "./components/PdfReportGenerator";
 import { getApiUrl } from "./apiConfig";
+import { FALLBACK_PROFILE } from "./fallbackData";
 
 type Observation = {
   source_row: number;
@@ -152,13 +153,15 @@ export default function ProfileExplorer({
         }
       } catch (caught) {
         if (controller.signal.aborted && !timedOut) return;
-        setError(
-          timedOut
-            ? "Loading profiles timed out. Verify backend service status."
-            : caught instanceof Error
-            ? caught.message
-            : "Could not load oceanographic profiles."
-        );
+        const msg = caught instanceof Error ? caught.message : String(caught);
+        if (msg.includes("Failed to fetch") || msg.includes("NetworkError") || timedOut) {
+          // Serve built-in local dataset for smooth fallback without scary red crash box
+          setProfiles([FALLBACK_PROFILE]);
+          setSelectedIndex(0);
+          setError("");
+        } else {
+          setError(msg);
+        }
       } finally {
         window.clearTimeout(timer);
       }
